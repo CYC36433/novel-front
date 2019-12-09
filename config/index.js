@@ -10,17 +10,19 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    // 代理配置
     proxyTable: {},
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+    autoOpenBrowser: true, // 自动打开浏览器
+    useEslint: true, // 使用eslint规范代码
+    showEslintErrorsInOverlay: true, // 展示eslint的错误提示
 
-    
     /**
      * Source Maps
      */
