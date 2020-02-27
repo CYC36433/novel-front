@@ -3,8 +3,8 @@
     <!-- 侧边栏sidebar -->
     <!-- <sidebar class="sidebar-container"></sidebar> -->
     <div class="main-container">
-      <navbar></navbar>
-      <app-main></app-main>
+      <navbar />
+      <app-main />
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@ import Navbar from './components/Navbar'
 import AppMain from './components/AppMain'
 
 export default {
-  components: {Navbar, AppMain}
+  components: { Navbar, AppMain }
 }
 </script>
 
@@ -22,7 +22,7 @@ export default {
 $bg: rgb(217, 236, 255);
 #app{
   background: $bg;
-  height: 100%;
+  min-height: 100%;
 }
 #app-main{
   padding: 10px 20px;

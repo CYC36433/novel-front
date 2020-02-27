@@ -1,7 +1,7 @@
 <template>
   <div id="export">
     Excel導出
-    <svg-icon icon-class="eye"/>
+    <svg-icon icon-class="eye" />
   </div>
 </template>
 

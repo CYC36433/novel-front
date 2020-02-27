@@ -10,7 +10,7 @@ import '@/style/index.css'
 import '@/icons' // icon
 import '@/permission' // 权限
 
-Vue.use(ElementUI);
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
