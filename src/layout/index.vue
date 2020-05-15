@@ -19,12 +19,15 @@ export default {
 </script>
 
 <style lang="scss">
-$bg: rgb(217, 236, 255);
+// $bg: rgb(217, 236, 255);
+$bg: rgb(255, 255, 255);
 #app{
   background: $bg;
-  min-height: 100%;
+  height: 100%;
 }
 #app-main{
+  width: 1440px;
   padding: 10px 20px;
+  margin: 0 auto;
 }
 </style>
