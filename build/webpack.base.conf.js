@@ -60,7 +60,7 @@ module.exports = {
         exclude: [resolve('src/icons')], // 使用exclude排除src/icons，让url-loader只处理除此文件夹之外的svg
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/frame-[name].[hash:5].[ext]')
+          name: utils.assetsPath('img/[name].[hash:5].[ext]')
         }
       },
       {
@@ -68,7 +68,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/frame-[name].[hash:5].[ext]')
+          name: utils.assetsPath('media/[name].[hash:5].[ext]')
         }
       },
       {
@@ -76,7 +76,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/frame-[name].[hash:5].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:5].[ext]')
         }
       }
     ]

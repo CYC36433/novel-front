@@ -5,7 +5,7 @@ import store from './store'
 router.beforeEach(async(to, from, next) => {
   /** 开发环境 development */
   if (process.env.NODE_ENV != 'production') {
-    if (!store.getters.role) {
+    if (store.getters.roles.length == 0) {
       await store.dispatch('getInfo')
       next({ ...to, replace: true })
     } else {
@@ -18,7 +18,7 @@ router.beforeEach(async(to, from, next) => {
     // 已登录
     if (getToken()) {
       // console.log(store.getters.role);
-      if (!store.getters.role) {
+      if (store.getters.roles.length == 0) {
         await store.dispatch('getInfo')
         next({ ...to, replace: true })
       } else {

@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     menudata() {
-      var b1 = this.$router.options.routes.concat(global.antRouter)
+      var b1 = this.$router.options.routes
       return b1.reverse()
     }
   }

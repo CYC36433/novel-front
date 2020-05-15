@@ -11,7 +11,17 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     // 代理配置
-    proxyTable: {},
+    proxyTable: {
+      '/resource': {
+        target: 'http://10.124.131.79/resource', // 代理的目标IP地址
+        changeOrigin: true, // 是否将主机头的源更改为目标URL
+        ws: true, // 是否代理websocket
+        secure: false, // 是否验证SSL证书
+        pathRewrite: {
+          '^/resource': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -45,7 +55,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './', // 修改打包路径为相对路径，以便项目分离
 
     /**
      * Source Maps

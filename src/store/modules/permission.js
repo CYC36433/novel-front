@@ -1,14 +1,19 @@
 import { constantRouterMap, asyncRouterMap } from '@/router/index'
+import { isArrayHasSame } from '@/utils'
 
-// 根据roleId过滤路由
-function filterAsyncRouter(routers, role) {
+// 根据roles过滤路由
+function filterAsyncRouter(routers, roles) {
   const accessedRouters = routers.filter(route => {
-    if (route.hidden === true) {
+    if (route.roles == null) {
+      if (route.children && route.children.length) {
+        route.children = filterAsyncRouter(route.children, roles)
+        return (route.children && route.children.length)
+      }
       return true
     }
-    if (route.roles.indexOf(role) > -1) {
+    if (isArrayHasSame(route.roles, roles)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, role)
+        route.children = filterAsyncRouter(route.children, roles)
         return (route.children && route.children.length)
       }
       return true
@@ -31,7 +36,7 @@ const permission = {
   },
   actions: {
     // 根据role动态生成路由
-    GenerateRoutes({ commit }, role) {
+    GenerateRoutes({ commit }, roles) {
       return new Promise(resolve => {
         var accessedRouters
         // 开发环境加载全部菜单
@@ -39,7 +44,7 @@ const permission = {
           accessedRouters = asyncRouterMap
         } else {
         // 生产环境为动态菜单
-          accessedRouters = filterAsyncRouter(asyncRouterMap, role)
+          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         }
         commit('SET_ROUTERS', accessedRouters)
         global.antRouter = accessedRouters

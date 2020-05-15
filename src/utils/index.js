@@ -18,6 +18,14 @@ export function format(date, fmt) {
   return fmt
 }
 
+// 判断两个数组是否包含相同元素
+export function isArrayHasSame(arr1, arr2) {
+  var result = arr1.filter(o => {
+    return arr2.indexOf(o) > -1
+  }).length
+  return result > 0
+}
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time

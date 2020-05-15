@@ -2,7 +2,7 @@
 
 > A front frame for MIS　MIS系统开发前端基础框架　持续更新中...
 
-# VScode settings.json配置推荐
+## VScode settings.json配置推荐
 ``` bash
 {
   "window.zoomLevel": 0,

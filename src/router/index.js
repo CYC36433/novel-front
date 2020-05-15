@@ -110,12 +110,10 @@ export const asyncRouterMap = [
     path: '/devCenter',
     component: Layout,
     title: '開發中心',
-    roles: [],
     children: [{
       path: '/devCenter/menuManage',
       component: () => import('@/views/devCenter/menuManage'),
-      title: '菜單管理',
-      roles: []
+      title: '菜單管理'
     }]
   },
   { path: '*', redirect: '/404', hidden: true }
