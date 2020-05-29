@@ -5,8 +5,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import '@/style/index.css'
+import '@/style/element.css'
+import '@/style/index.scss'
 import '@/icons' // icon
 import '@/permission' // 权限
 

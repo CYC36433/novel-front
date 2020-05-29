@@ -22,6 +22,7 @@ export const constantRouterMap = [
     path: '/Excel',
     component: Layout,
     title: '導入導出示例',
+    redirect: '/Excel/Export',
     children: [{
       path: '/Excel/Export',
       component: () => import('@/views/Excel/export.vue'),
@@ -30,6 +31,10 @@ export const constantRouterMap = [
       path: '/Excel/Upload',
       component: () => import('@/views/Excel/upload.vue'),
       title: 'Excel導入'
+    }, {
+      path: '/Excel/formexample',
+      component: () => import('@/views/Excel/formexample.vue'),
+      title: '表單示例'
     }]
   }
 ]
@@ -45,6 +50,7 @@ export const asyncRouterMap = [
     path: '/superAdmin',
     component: Layout,
     title: '超级管理员',
+    redirect: '/superAdmin/add',
     // roles为该菜单可由谁看到，是一个roleId数组，具体系统具体配置
     // 此数组暂定为Number数组
     roles: [1],
@@ -64,6 +70,7 @@ export const asyncRouterMap = [
     path: '/admin',
     component: Layout,
     title: '系统管理员',
+    redirect: '/admin/update',
     roles: [1, 2],
     children: [{
       path: '/admin/update',
@@ -76,6 +83,7 @@ export const asyncRouterMap = [
     path: '/user',
     component: Layout,
     title: '普通用户',
+    redirect: '/user/query',
     roles: [1, 2, 3],
     children: [{
       path: '/user/query',
@@ -88,6 +96,7 @@ export const asyncRouterMap = [
     path: '/public',
     component: Layout,
     title: '公共菜单',
+    redirect: '/public/user',
     roles: [1, 2, 3],
     children: [{
       path: '/public/user',
@@ -110,10 +119,22 @@ export const asyncRouterMap = [
     path: '/devCenter',
     component: Layout,
     title: '開發中心',
+    redirect: '/devCenter/menuManage',
     children: [{
       path: '/devCenter/menuManage',
       component: () => import('@/views/devCenter/menuManage'),
       title: '菜單管理'
+    }]
+  },
+  {
+    path: '/hid',
+    component: Layout,
+    title: '非菜單頁面',
+    hidden: true,
+    children: [{
+      path: '/public/detail',
+      component: () => import('@/views/public/detail'),
+      title: '數據詳情'
     }]
   },
   { path: '*', redirect: '/404', hidden: true }
