@@ -85,11 +85,5 @@ export default {
     width: 100%;
   }
 }
-@media screen and (max-width: 600px) {
-.misForm{
-  .el-col{
-    width: 100%;
-  }
-}
-}
+
 </style>

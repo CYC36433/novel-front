@@ -22,3 +22,16 @@ body {
 html {
     height: 100%;
 }
+
+.mobile-show{
+    display: none;
+}
+
+@media screen and (max-width: 670px) {
+.web-show{
+    display: none;
+}
+.el-col{
+    width: 100%;
+}
+}

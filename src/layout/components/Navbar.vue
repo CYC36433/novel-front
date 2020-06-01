@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <!-- web-menu -->
-    <el-row class="nav-container">
+    <el-row class="nav-container web-show">
       <el-menu :default-active="getActive($route.path)" class="nav-menu" active-text-color="#6F8EBE" text-color="#131415" mode="horizontal" router>
         <el-col class="img-container">
           <img src="@/assets/images/fii.png" alt="">
@@ -24,7 +24,7 @@
       </el-menu>
     </el-row>
     <!-- mobile-menu -->
-    <el-row class="mobile-nav">
+    <el-row class="mobile-nav mobile-show">
       <span class="avatar-container" @click="showMenu">
         <el-avatar :size="36">臣</el-avatar>
       </span>
@@ -33,7 +33,6 @@
       </span>
       <span class="nav-right">
         <i class="el-icon-date" />
-        <!-- <i class="el-icon-date" /> -->
       </span>
       <el-drawer :visible.sync="menuVisible" direction="ltr" size="200px" :with-header="false" :show-close="false">
         <el-row class="info-container">
@@ -43,7 +42,7 @@
             <div>陳越臣</div>
           </span>
         </el-row>
-        <!-- <el-menu :default-active="$route.path" class="nav-menu" active-text-color="#6F8EBE" text-color="#131415" mode="horizontal" router>
+        <el-menu :default-active="$route.path" class="nav-menu" active-text-color="#6F8EBE" text-color="#131415" router>
           <template v-for="menu in menudata">
             <el-submenu v-if="menu.children" v-show="!menu.hidden" :key="menu.title" :index="menu.title">
               <template slot="title">{{ menu.title }}</template>
@@ -51,14 +50,16 @@
             </el-submenu>
             <el-menu-item v-else v-show="!menu.hidden" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
           </template>
-        </el-menu> -->
+        </el-menu>
       </el-drawer>
     </el-row>
   </div>
 </template>
 
 <script>
+import Menutree from '@/components/Menutree'
 export default {
+  components: { Menutree },
   data() {
     return {
       menuVisible: false
@@ -89,9 +90,6 @@ export default {
   min-height: 80px;
   padding-top: 12px;
   box-shadow: 0 0 5px #C0C0C0;
-  .mobile-nav{
-    display: none;
-  }
   .nav-container{
     // max-width: 1440px;
     margin: 0 auto;
@@ -156,9 +154,6 @@ export default {
 #navbar{
   min-height: 50px;
   padding-top: 6px;
-  .nav-container{
-    display: none;
-  }
   .mobile-nav{
     display: flex;
     .avatar-container{

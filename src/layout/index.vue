@@ -40,11 +40,6 @@ $sidebarWidth: 160px;
   width: calc(100% - #{$sidebarWidth});
   padding: 10px 20px;
 }
-// @media screen and (max-width: 1440px) {
-// .main-container{
-//   width: 100%;
-// }
-// }
 @media screen and (max-width: 670px) {
 #Sidebar{
   display: none;

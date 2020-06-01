@@ -18,7 +18,6 @@ export default {
   components: { Menutree },
   data() {
     return {
-
     }
   },
   computed: {
