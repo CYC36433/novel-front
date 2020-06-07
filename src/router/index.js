@@ -46,18 +46,18 @@ export const asyncRouterMap = [
     path: '/public',
     component: Layout,
     title: '公共菜单',
-    redirect: '/public/admin',
+    redirect: '/public/export',
     // roles为该菜单可由哪些角色看到，是一个roleId数组，具体系统具体配置
     roles: [10],
     children: [{
-      path: '/public/admin',
-      component: () => import('@/views/public/admin.vue'),
-      title: '管理员',
+      path: '/public/export',
+      component: () => import('@/views/public/export.vue'),
+      title: '導出',
       roles: [10]
     }, {
-      path: '/public/user',
-      component: () => import('@/views/public/user.vue'),
-      title: '用户',
+      path: '/public/upload',
+      component: () => import('@/views/public/upload.vue'),
+      title: '上傳導入',
       roles: [10]
     }]
   },

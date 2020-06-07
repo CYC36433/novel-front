@@ -37,6 +37,23 @@ const user = {
         // }).catch(error => {
         //   reject(error)
         // })
+        // var formdata = new FormData()
+        // formdata.append('client_id', 'javaboy')
+        // formdata.append('client_secret', '123')
+        // formdata.append('username', userCode)
+        // formdata.append('password', password)
+        // formdata.append('grant_type', 'password')
+        // userApi.logintest(formdata).then(res => {
+        //   console.log(res.data.access_token)
+        //   commit('SET_TOKEN', '1')
+        //   userApi.messageTest(res.data.access_token).then(res2 => {
+        //     console.log(res2)
+        //   })
+        //   setToken('1')
+        //   resolve()
+        // }).catch(error => {
+        //   reject(error)
+        // })
       })
     },
     // 获取信息

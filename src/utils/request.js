@@ -5,6 +5,7 @@ import store from '@/store'
 
 var baseIP
 // baseIP = 'http://169.254.243.36:8080' // 本地调试
+// baseIP = 'http://192.168.43.117:9000' // 本地调试
 baseIP = 'http://10.139.198.176:8080/rookie' // 观泰IP
 // baseIP = 'http://10.139.199.167:8082' // 徐鑫IP
 // baseIP = 'http://10.139.199.153:8080' // 寅龙IP
@@ -13,6 +14,7 @@ baseIP = 'http://10.139.198.176:8080/rookie' // 观泰IP
 // baseIP = 'http://10.139.198.184:8080/rookie' // 海波IP
 // baseIP = 'http://10.124.131.77:8080xz' // 服務器Ip
 // baseIP = baseIP + '/rookie'
+// baseIP = '/api'
 
 // 创建axios实例
 const service = axios.create({
@@ -59,7 +61,7 @@ service.interceptors.response.use(
     // 请求成功
       if (res.code == 101) {
         Message({
-          message: res.message,
+          message: res.message || '操作成功',
           type: 'success',
           duration: 3 * 1000
         })

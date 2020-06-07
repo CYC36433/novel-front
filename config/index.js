@@ -12,6 +12,15 @@ module.exports = {
     assetsPublicPath: '/',
     // 代理配置
     proxyTable: {
+      '/api': {
+        target: 'http://192.168.43.117:9000', // 代理的目标IP地址
+        changeOrigin: true, // 是否将主机头的源更改为目标URL
+        ws: true, // 是否代理websocket
+        secure: false, // 是否验证SSL证书
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
       '/resource': {
         target: 'http://10.124.131.79/resource', // 代理的目标IP地址
         changeOrigin: true, // 是否将主机头的源更改为目标URL
