@@ -3,7 +3,11 @@
  */
 
 /** 格式化时间 */
-export function format(date, fmt) {
+export function format(param, fmt) {
+  if (!param) {
+    return ''
+  }
+  var date = new Date(param)
   var o = {
     'M+': date.getMonth() + 1, // 月份
     'd+': date.getDate(), // 日

@@ -4,13 +4,13 @@
     font-style: normal;
 }
 
-* {
+*{
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
     -webkit-box-sizing:border-box; /* Safari */
 }
 
-body {
+body{
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -19,12 +19,24 @@ body {
     height: 100%;
 }
 
-html {
+html{
     height: 100%;
+}
+
+#app{
+    height: 100%;
+}
+
+.gray-span{
+    color: #333333;
 }
 
 .mobile-show{
     display: none;
+}
+
+.el-avatar{
+    cursor: pointer;
 }
 
 @media screen and (max-width: 670px) {

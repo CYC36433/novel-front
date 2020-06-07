@@ -10,14 +10,19 @@
           <span>MIS系統開發前端基本框架</span>
         </el-col>
         <template v-for="menu in menudata">
-          <el-menu-item v-show="!menu.hidden" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
+          <el-menu-item v-show="!menu.isHidden" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
         </template>
         <el-col class="avatar-container">
           <el-dropdown trigger="click">
             <el-avatar :size="40">臣</el-avatar>
             <i class="el-icon-arrow-down" />
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>退出</el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="$router.push('/userCenter/infoUpdate')">个人信息修改</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="logout">退出</div>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -42,13 +47,13 @@
             <div>陳越臣</div>
           </span>
         </el-row>
-        <el-menu :default-active="$route.path" class="nav-menu" active-text-color="#6F8EBE" text-color="#131415" router>
+        <el-menu :default-active="$route.path" class="nav-menu" active-text-color="#6F8EBE" text-color="#131415" unique-opened router>
           <template v-for="menu in menudata">
-            <el-submenu v-if="menu.children" v-show="!menu.hidden" :key="menu.title" :index="menu.title">
+            <el-submenu v-if="menu.children && menu.children.length" v-show="!menu.isHidden" :key="menu.title" :index="menu.title">
               <template slot="title">{{ menu.title }}</template>
               <menutree :data="menu.children" />
             </el-submenu>
-            <el-menu-item v-else v-show="!menu.hidden" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
+            <el-menu-item v-else v-show="!menu.isHidden" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
           </template>
         </el-menu>
       </el-drawer>
@@ -70,6 +75,12 @@ export default {
       return this.$router.options.routes
     }
   },
+  watch: {
+    $route() {
+      this.menuVisible = false
+    },
+    deep: true
+  },
   methods: {
     getActive(val) {
       var b1 = this.$router.options.routes.filter(o => {
@@ -79,6 +90,10 @@ export default {
     },
     showMenu() {
       this.menuVisible = true
+    },
+    async logout() {
+      await this.$store.dispatch('logout')
+      this.$router.push('/login')
     }
   }
 }
@@ -117,15 +132,12 @@ export default {
         height: 45px;
         font-size: 20px;
         padding: 0;
-        margin: 0 18px;
+        margin: 0 20px;
       }
       .avatar-container{
         float: right;
         width: 65px;
         margin-top: 5px;
-        .el-avatar{
-          cursor: pointer;
-        }
         .el-icon-arrow-down{
           position: relative;
           top: -10px;
@@ -144,7 +156,7 @@ export default {
       }
       .el-menu-item{
         font-size: 18px;
-        margin: 0 5px;
+        margin: 0 8px;
       }
     }
   }

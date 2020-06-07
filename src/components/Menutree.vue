@@ -1,13 +1,13 @@
 <template>
   <div id="menutree" :class="{'wid-menu':flag}" :style="{'width':width}">
     <template v-for="menu in data">
-      <el-submenu v-if="menu.children" :key="menu.title" :index="menu.title">
+      <el-submenu v-if="menu.children && menu.children.length" :key="menu.title" :index="menu.title">
         <template slot="title">{{ menu.title }}</template>
         <menutree :data="menu.children" />
       </el-submenu>
       <el-menu-item v-else-if="menu.component" :key="menu.title" :index="menu.path">{{ menu.title }}</el-menu-item>
-      <li v-else :key="menu.title" class="li-extra-link">
-        <a target="_Blank" :href="menu.path">{{ menu.title }}</a>
+      <li v-else :key="menu.title" class="el-menu-item" @click="go(menu.path)">
+        {{ menu.title }}
       </li>
     </template>
   </div>
@@ -33,6 +33,11 @@ export default {
       if (this.width) {
         return true
       } else { return false }
+    }
+  },
+  methods: {
+    go(val) {
+      window.open(val)
     }
   }
 }

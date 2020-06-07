@@ -1,38 +1,46 @@
 import { getToken, setProjId } from '@/utils/auth'
-import router from './router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import store from './store'
+import router from './router'
+
+NProgress.configure({ showSpinner: false })
 
 router.beforeEach(async(to, from, next) => {
-  /** 开发环境 development */
-  if (process.env.NODE_ENV != 'production') {
-    if (store.getters.roles.length == 0) {
-      await store.dispatch('getInfo')
-      next({ ...to, replace: true })
-    } else {
-      next()
-    }
-  } else {
-  /** 生产环境 production */
-    // 设置系统ID
-    setProjId(5)
-    // 已登录
-    if (getToken()) {
-      // console.log(store.getters.role);
-      if (store.getters.roles.length == 0) {
+  NProgress.start()
+  const hasToken = getToken()
+  // 设置系统ID
+  setProjId(1)
+  if (hasToken) {
+    const hasRoles = store.getters.roles && store.getters.roles.length > 0
+    if (!hasRoles) {
+      try {
         await store.dispatch('getInfo')
         next({ ...to, replace: true })
-      } else {
-        next()
+      } catch (err) {
+        await store.dispatch('resetToken')
+        next('/login')
+        NProgress.done()
       }
     } else {
-    // 未登录,回到统一登录页面
-      next({
-        path: (window.location.replace(`http://` + window.location.host))
-      })
+      if (to.path == '/login') {
+        next('/')
+        NProgress.done()
+      } else {
+        next()
+        NProgress.done()
+      }
+    }
+  } else {
+    if (to.path == '/login') {
+      next()
+    } else {
+      next('/login')
+      NProgress.done()
     }
   }
 })
 
 router.afterEach(() => {
-
+  NProgress.done()
 })

@@ -1,5 +1,8 @@
-import { constantRouterMap, asyncRouterMap } from '@/router/index'
+import { constantRouterMap, asyncRouterMap, resetRouter } from '@/router'
 import { isArrayHasSame } from '@/utils'
+import Layout from '@/layout'
+import Blank from '@/layout/components/AppMain'
+const _import = require('@/router/_import_' + process.env.NODE_ENV)
 
 // 根据roles过滤路由
 function filterAsyncRouter(routers, roles) {
@@ -22,6 +25,27 @@ function filterAsyncRouter(routers, roles) {
   })
   return accessedRouters
 }
+// 根据后端返回的菜单生成菜单路由
+function generateMenuRoutes(menus) {
+  const accessedRouters = menus.filter(route => {
+    if (route.component) {
+      if (route.component == 'layout') {
+        route.component = Layout
+      } else {
+        if (route.component == 'blank') {
+          route.component = Blank
+        } else {
+          route.component = _import(route.component)
+        }
+      }
+    }
+    if (route.children && route.children.length) {
+      route.children = generateMenuRoutes(route.children)
+    }
+    return true
+  })
+  return accessedRouters
+}
 
 const permission = {
   state: {
@@ -39,16 +63,23 @@ const permission = {
     GenerateRoutes({ commit }, roles) {
       return new Promise(resolve => {
         var accessedRouters
-        // 开发环境加载全部菜单
-        if (process.env.NODE_ENV != 'production') {
-          accessedRouters = asyncRouterMap
-        } else {
-        // 生产环境为动态菜单
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
+        accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         commit('SET_ROUTERS', accessedRouters)
-        global.antRouter = accessedRouters
         resolve(accessedRouters)
+      })
+    },
+    getRoutes({ commit }, menus) {
+      return new Promise(resolve => {
+        var accessedRouters = generateMenuRoutes(menus).concat([{ path: '*', redirect: '/404', isHidden: true }])
+        commit('SET_ROUTERS', accessedRouters)
+        resolve(accessedRouters)
+      })
+    },
+    resetRoutes({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_ROUTERS', [])
+        resetRouter()
+        resolve()
       })
     }
   }
