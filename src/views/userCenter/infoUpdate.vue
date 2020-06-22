@@ -1,6 +1,6 @@
 <template>
   <div id="infoUpdate">
-    <mis-form :model="exForm" :form-head="formHead" label-width="90px" :num="4">
+    <mis-form :model="exForm" :form-head="formHead" label-width="90px" :num="4" :show-handle="false">
       <h2 slot="title">個人信息</h2>
       <template slot="footer">
         <el-col :span="6">

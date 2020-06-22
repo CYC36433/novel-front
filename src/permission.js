@@ -5,7 +5,8 @@ import store from './store'
 import router from './router'
 
 NProgress.configure({ showSpinner: false })
-
+// 登录白名单
+const whiteList = ['/login']
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   const hasToken = getToken()
@@ -32,7 +33,7 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
-    if (to.path == '/login') {
+    if (whiteList.indexOf(to.path) != -1) {
       next()
     } else {
       next('/login')

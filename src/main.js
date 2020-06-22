@@ -9,6 +9,7 @@ import ElementUI from 'element-ui'
 import '@/style/element.css'
 import '@/style/index.scss'
 import '@/icons' // icon
+import '@/components' // 引入全局组件
 import '@/permission' // 权限
 import { hasPerm } from '@/utils/hasPerm' // 按钮级别权限
 
