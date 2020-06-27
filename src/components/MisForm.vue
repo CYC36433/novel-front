@@ -129,14 +129,14 @@ export default {
   },
   methods: {
     hasChild(val) {
-      return val == 'el-select' ||
-              val == 'el-radio-group' ||
-              val == 'el-checkbox-group'
+      return val === 'el-select' ||
+              val === 'el-radio-group' ||
+              val === 'el-checkbox-group'
     },
     getChildType(val) {
-      return val == 'el-select' ? 'el-option'
-        : val == 'el-radio-group' ? 'el-radio'
-          : val == 'el-checkbox-group' ? 'el-checkbox'
+      return val === 'el-select' ? 'el-option'
+        : val === 'el-radio-group' ? 'el-radio'
+          : val === 'el-checkbox-group' ? 'el-checkbox'
             : ''
     },
     handle(handleType) {

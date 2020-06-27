@@ -62,7 +62,7 @@ const user = {
         var flag = 1 // 1.前端生成菜单 2.后端生成菜单
         var userInfo
         var roles
-        if (flag == 1) {
+        if (flag === 1) {
           userInfo = { userName: '开发人员', accountName: 'Administrator' }
           roles = [10]
           commit('SET_USERINFO', userInfo)

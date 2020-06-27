@@ -37,9 +37,9 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     // 请求数据不成功,弹框提示
-    if (res.code != 100 && res.code != 101) {
+    if (res.code !== 100 && res.code !== 101) {
       // token过期code401,返回登录页
-      if (res.code == 401) {
+      if (res.code === 401) {
         Message({
           message: '登录信息过期，即将跳转登录页！',
           type: 'error',
@@ -48,7 +48,7 @@ service.interceptors.response.use(
         store.dispatch('resetToken')
         setTimeout(window.location.replace(`http://` + window.location.host), 2000)
       } else {
-        if (res.code != 501) {
+        if (res.code !== 501) {
           Message({
             message: res.message || '请求发生错误！',
             type: 'error',
@@ -59,7 +59,7 @@ service.interceptors.response.use(
       return Promise.reject(new Error(res.message || '请求发生错误！'))
     } else {
     // 请求成功
-      if (res.code == 101) {
+      if (res.code === 101) {
         Message({
           message: res.message || '操作成功',
           type: 'success',

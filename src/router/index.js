@@ -19,7 +19,7 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     title: '首页',
-    redirect: '/userCenter/infoUpdate',
+    redirect: '/userCenter',
     isHidden: true
   }
 ]
@@ -36,7 +36,7 @@ const devRouterMap = {
   }]
 }
 
-if (process.env.NODE_ENV != 'production') {
+if (process.env.NODE_ENV === 'development') {
   constantRouterMap.push(devRouterMap)
 }
 

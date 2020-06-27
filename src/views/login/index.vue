@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     showPwd() {
-      if (this.passwordType == 'password') {
+      if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
         this.passwordType = 'password'

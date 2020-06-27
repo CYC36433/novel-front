@@ -24,6 +24,7 @@ module.exports = {
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
+    "vue/require-default-prop": "off",
     "vue/no-v-html": "off",
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
@@ -47,7 +48,7 @@ module.exports = {
     'curly': [2, 'multi-line'],
     'dot-location': [2, 'property'],
     'eol-last': 2,
-    'eqeqeq': 0,
+    'eqeqeq': ["error", "always", {"null": "ignore"}],
     'generator-star-spacing': [2, {
       'before': true,
       'after': true
@@ -96,7 +97,7 @@ module.exports = {
     'no-implied-eval': 2,
     'no-inner-declarations': [2, 'functions'],
     'no-invalid-regexp': 2,
-    'no-irregular-whitespace': 0,
+    'no-irregular-whitespace': 2,
     'no-iterator': 2,
     'no-label-var': 2,
     'no-labels': [2, {

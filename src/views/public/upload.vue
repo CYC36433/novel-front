@@ -1,6 +1,6 @@
 <template>
   <div id="upload">
-      Excel導入
+    Excel導入
   </div>
 </template>
 

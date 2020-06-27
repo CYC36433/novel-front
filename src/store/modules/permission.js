@@ -2,7 +2,7 @@ import { constantRouterMap, asyncRouterMap, resetRouter } from '@/router'
 import { isArrayHasSame } from '@/utils'
 import Layout from '@/layout'
 import Blank from '@/layout/components/AppMain'
-const _import = require('@/router/_import_' + process.env.NODE_ENV)
+// const _import = require('@/router/_import_' + process.env.NODE_ENV)
 
 // 根据roles过滤路由
 function filterAsyncRouter(routers, roles) {
@@ -29,13 +29,14 @@ function filterAsyncRouter(routers, roles) {
 function generateMenuRoutes(menus) {
   const accessedRouters = menus.filter(route => {
     if (route.component) {
-      if (route.component == 'layout') {
+      if (route.component === 'layout') {
         route.component = Layout
       } else {
-        if (route.component == 'blank') {
+        if (route.component === 'blank') {
           route.component = Blank
         } else {
-          route.component = _import(route.component)
+          // route.component = _import(route.component)
+          route.component = () => import('@/views' + route.component + '.vue')
         }
       }
     }

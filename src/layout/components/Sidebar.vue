@@ -24,7 +24,7 @@ export default {
     menudata() {
       var b1 = this.$route.path
       var b2 = this.$router.options.routes.filter(o => {
-        return o.path != '/' && b1.indexOf(o.path) == 0 && !o.isHidden
+        return o.path !== '/' && b1.indexOf(o.path) === 0 && !o.isHidden
       })
       if (b2 && b2.length) {
         return b2[0].children

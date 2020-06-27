@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import 'babel-polyfill'
 import ElementUI from 'element-ui'
 import '@/style/element.css'
 import '@/style/index.scss'
@@ -23,6 +22,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
+  render: h => h(App)
 })

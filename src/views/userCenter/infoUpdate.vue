@@ -22,7 +22,7 @@ export default {
       exForm: {
         staffCode: 'F1336521',
         staffName: '陳越臣',
-        gender: '男',
+        gender: 1,
         unitName: '周邊單位',
         workStatus: '在職',
         degree: '本科',
@@ -32,15 +32,15 @@ export default {
         workContent: '前端開發，主要負責公司內部系統前端web開發。'
       },
       formHead: [
-        { label: '工號', prop: 'staffCode', type: 'el-input' },
-        { label: '姓名', prop: 'staffName', type: 'el-input' },
-        { label: '性別', prop: 'gender', type: 'el-radio-group', settings: '男,女' },
-        { label: '入集團日期', prop: 'joinDate', type: 'el-date-picker' },
-        { label: '事業處', prop: 'unitName', type: 'el-input' },
-        { label: '在職狀態', prop: 'workStatus', type: 'el-input' },
-        { label: '專業', prop: 'major', type: 'el-input' },
-        { label: '工作地點', prop: 'workPlace', type: 'el-checkbox-group', span: 24, settings: [{ label: '深圳', value: 1 }, { label: '上海', value: 2 }, { label: '杭州', value: 3 }] },
-        { label: '工作內容', prop: 'workContent', type: 'el-input', componentType: 'textarea', span: 24 }
+        { label: '工號', prop: 'staffCode', type: 'input' },
+        { label: '姓名', prop: 'staffName', type: 'input' },
+        { label: '性別', prop: 'gender', type: 'radio', settings: [{ label: '男', value: 1 }, { label: '女', value: 0 }] },
+        { label: '入集團日期', prop: 'joinDate', type: 'date-picker' },
+        { label: '事業處', prop: 'unitName', type: 'input' },
+        { label: '在職狀態', prop: 'workStatus', type: 'input' },
+        { label: '專業', prop: 'major', type: 'input' },
+        { label: '工作地點', prop: 'workPlace', type: 'checkbox', span: 24, settings: [{ label: '深圳', value: 1 }, { label: '上海', value: 2 }, { label: '杭州', value: 3 }] },
+        { label: '工作內容', prop: 'workContent', type: 'input', componentType: 'textarea', span: 24 }
       ]
     }
   },

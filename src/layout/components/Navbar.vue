@@ -84,7 +84,7 @@ export default {
   methods: {
     getActive(val) {
       var b1 = this.$router.options.routes.filter(o => {
-        return o.path != '/' && val.indexOf(o.path) == 0
+        return o.path !== '/' && val.indexOf(o.path) === 0
       })
       return b1[0].path
     },
