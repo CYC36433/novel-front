@@ -49,13 +49,19 @@ $sidebarWidth: 160px;
 }
 .app-main{
   float: right;
+  max-width: 1440px;
   width: calc(100% - #{$sidebarWidth});
   padding: 20px;
+  margin: 0 auto;
   .el-row{
     padding: 8px;
   }
+  .main-title{
+    color: #6F8EBE;
+  }
 }
 .app-main-w{
+  float: none;
   width: 100%;
 }
 @media screen and (max-width: 670px) {
@@ -64,6 +70,7 @@ $sidebarWidth: 160px;
 }
 .app-main{
   width: 100%;
+  padding: 5px;
 }
 }
 </style>

@@ -19,8 +19,26 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     title: '首页',
-    redirect: '/userCenter',
-    isHidden: true
+    redirect: '/index',
+    isHidden: true,
+    children: [
+      {
+        path: '/index',
+        component: () => import('@/views/home'),
+        title: '首页信息',
+        isHidden: true
+      }, {
+        path: '/searchResult',
+        component: () => import('@/views/home/searchResult.vue'),
+        title: '搜索信息',
+        isHidden: true
+      }, {
+        path: '/fictionDetail/:id',
+        component: () => import('@/views/home'),
+        title: '详细信息',
+        isHidden: true
+      }
+    ]
   }
 ]
 // devRouterMap是本地开发菜单，仅开发环境看到
@@ -79,7 +97,7 @@ export const asyncRouterMap = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', //后端支持可开
+  // mode: 'history', //支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

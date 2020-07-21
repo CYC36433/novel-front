@@ -1,7 +1,7 @@
 <template>
   <el-form
     ref="el-form"
-    class="misForm"
+    class="mis-form"
     :model="model"
     :rules="rules"
     :inline="inline"
@@ -10,7 +10,7 @@
     :label-position="labelPosition"
   >
     <slot name="title" />
-    <el-row>
+    <el-row class="mis-form-row">
       <slot />
       <el-col v-for="(item, index) in formHeadFilter" :key="index" :span="item.span || span">
         <el-form-item
@@ -21,7 +21,10 @@
           :label-width="item.width"
           :rules="item.rules"
         >
-          <template v-if="!item.type">{{ model[item.prop] }}</template>
+          <template v-if="!item.type">
+            <span v-if="item.formatter">{{ item.formatter(model[item.prop]) }}</span>
+            <span v-else>{{ model[item.prop] }}</span>
+          </template>
           <!-- el-radio-group组件的name属性报错 -->
           <el-radio-group v-else-if="item.type == 'el-radio-group'" v-model="model[item.prop]">
             <el-radio v-for="(childItem,childIndex) in item.settings" :key="childIndex" :label="childItem.label">
@@ -32,18 +35,24 @@
             :is="item.type"
             v-else
             v-model="model[item.prop]"
+            :disabled="item.disabled"
             :placeholder="item.placeholder"
             :type="item.componentType"
             :clearable="item.clearable"
+            :readonly="item.readonly"
+            :autosize="item.autosize"
+            :multiple="item.multiple"
+            :rows="item.rows || 5"
+            :prefix-icon="item.prefixIcon"
+            :suffix-icon="item.suffixIcon"
             :min="item.min"
             :max="item.max"
-            :active-color="item.activeColor"
-            :active-value="item.activeValue"
-            :inactive-value="item.inactiveValue"
+            :active-color="item.activeColor || '#B2D25D'"
+            :active-value="item.activeValue || 1"
+            :inactive-value="item.inactiveValue || 0"
           >
-            <template v-if="item.labelText">{{ model[item.prop] }}</template>
             <template v-if="hasChild(item.type)">
-              <component :is="getChildType(item.type)" v-for="(childItem,childIndex) in item.settings" :key="childIndex" :label="childItem.label" :value="childItem.value">
+              <component :is="getChildType(item.type)" v-for="(childItem,childIndex) in item.settings" :key="childIndex" :label="childItem.label" :value="childItem.value" :disabled="childItem.disabled">
                 <template v-if="childItem.labelText">{{ childItem.labelText }}</template>
               </component>
             </template>
@@ -101,12 +110,12 @@ export default {
     },
     // 格式表单头
     formHeadFilter() {
+      if (!this.formHead) {
+        return []
+      }
       return this.formHead.filter(o => {
         // 统一type
         if (o.type) {
-          if (o.type.includes('tag')) {
-            o.labelText = o.label
-          }
           if ((o.type.includes('radio') || o.type.includes('checkbox')) && !o.type.includes('-group')) {
             o.type += '-group'
             o.settings.forEach(p => {
@@ -121,10 +130,10 @@ export default {
         // 添加必填校验
         if (o.required && !o.rules) {
           var ruleMessage = o.label || o.placeholder || ''
-          o.rules = [{ required: true, trigger: ['blur', 'change'], message: `${ruleMessage.replace(/\s*/g, '')}不能为空` }]
+          o.rules = [{ required: true, trigger: ['blur', 'change'], message: `${ruleMessage.replace(/\s*/g, '')}不能為空` }]
         }
         return true
-      }) || []
+      })
     }
   },
   methods: {
@@ -147,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss">
-.misForm{
+.mis-form{
   .el-select{
     width: 100%;
   }

@@ -38,9 +38,12 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://192.168.43.117:9000', // 代理的目标IP地址
+        target: 'https://blog.alexmmd.top/api', // 代理的目标IP地址
         changeOrigin: true, // 是否将主机头的源更改为目标URL
-        ws: true // 是否代理websocket
+        ws: true, // 是否代理websocket
+        pathRewrite: {
+          '^/api': ''
+        }
       }
     }
     // before: require('./mock/mock-server.js')

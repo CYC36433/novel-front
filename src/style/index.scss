@@ -27,12 +27,13 @@ html{
     height: 100%;
 }
 
-.gray-span{
-    color: #333333;
-}
-
 .mobile-show{
     display: none;
+}
+
+.el-dialog{
+    width: 96%;
+    max-width: 660px;
 }
 
 .el-avatar{

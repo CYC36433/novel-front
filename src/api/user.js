@@ -11,11 +11,16 @@ function messageTest(data) {
 function getInfo() {
   return request.post('/login/getMyInfo')
 }
+// 注册
+function signUp(data) {
+  return request.post('/novel-subscription-user/signUp/record', data)
+}
 
 const userApi = {
   login,
   getInfo,
-  messageTest
+  messageTest,
+  signUp
 }
 
 export default userApi
