@@ -21,12 +21,12 @@ baseIP = process.env.VUE_APP_BASE_API
 // 创建axios实例
 const service = axios.create({
   baseURL: baseIP, // 请求的基本地址
-  timeout: 15 * 1000 // 请求超时时间
+  timeout: 20 * 1000 // 请求超时时间
 })
 // request拦截器
 service.interceptors.request.use(config => {
   if (getToken()) {
-    config.headers['token'] = getToken()
+    config.headers['Authorization'] = 'Bearer' + getToken()
   }
   return config
 }, error => {
@@ -53,18 +53,18 @@ service.interceptors.response.use(
         } else {
           if (res.code !== 501) {
             Message({
-              message: res.message || '请求发生错误！',
+              message: res.msg || '请求发生错误！',
               type: 'error',
               duration: 5 * 1000
             })
           }
         }
-        return Promise.reject(new Error(res.message || '请求发生错误！'))
+        return Promise.reject(new Error(res.msg || '请求发生错误！'))
       } else {
         // 请求成功
         if (res.code === 101) {
           Message({
-            message: res.message || '操作成功',
+            message: res.msg || '操作成功',
             type: 'success',
             duration: 3 * 1000
           })

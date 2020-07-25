@@ -1,15 +1,11 @@
 import request from '@/utils/request'
 
 function login(data) {
-  return request.post('/login/auth', data)
-}
-
-function messageTest(data) {
-  return request.get('/api/magazine-subscription-customer/customer/message', { params: { access_token: data }})
+  return request.post('/auth-server/oauth/token', data)
 }
 
 function getInfo() {
-  return request.post('/login/getMyInfo')
+  return request.get('/novel-subscription-user/getMyUserInfo/roles')
 }
 // 注册
 function signUp(data) {
@@ -19,7 +15,6 @@ function signUp(data) {
 const userApi = {
   login,
   getInfo,
-  messageTest,
   signUp
 }
 

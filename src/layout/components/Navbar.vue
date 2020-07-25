@@ -2,54 +2,38 @@
   <div id="navbar">
     <el-row class="nav-container web-show">
       <el-col class="title-container">
-        <span>鱼书</span>
+        <div @click="$router.push('/')">鱼书</div>
       </el-col>
       <el-col class="search-container nav-center">
-        <el-input v-model="searchContent" placeholder="ISBN,图书名称" @keyup.native.enter="search">
+        <el-input v-model="searchContent" placeholder="输入关键词查询小说" @keyup.native.enter="search">
           <el-button slot="append" icon="el-icon-search" @click="search" />
         </el-input>
       </el-col>
       <el-col class="avatar-container">
-        <el-button type="text" @click="dialogVisible = true">登录</el-button>
-        <!-- <el-button type="text">注册</el-button> -->
+        <el-button v-if="!$store.getters.token" type="text" @click="dialogVisible = true">登录</el-button>
+        <!-- <el-button v-else type="text" @click="dialogVisible = true">{{ $store.getters.userInfo.username || '' }}</el-button> -->
+        <el-dropdown v-else trigger="click" click="web-show">
+          <el-avatar :size="40" icon="el-icon-user-solid" />
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <div @click="$router.push('/userCenter/mySubscribe')">我的订阅</div>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <div @click="logout">注销登录</div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
     </el-row>
-    <el-dialog :visible.sync="dialogVisible" center :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogVisible" center :close-on-click-modal="false" @close="closeDialog">
       <template slot="title">
         <el-tabs v-model="activeName">
           <el-tab-pane label="登　　录" name="first" />
           <el-tab-pane label="注　　册" name="second" />
         </el-tabs>
       </template>
-      <mis-form v-if="activeName === 'first'" ref="loginForm" class="loginForm" label-width="0" :model="loginForm" :show-handle="false">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="账号" />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="loginForm.password" placeholder="密码" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="login-button" @click="handleLogin">登录</el-button>
-        </el-form-item>
-      </mis-form>
-      <mis-form v-else ref="loginForm" class="loginForm" label-width="0" :model="loginForm" :show-handle="false">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="账号" />
-        </el-form-item>
-        <el-form-item prop="email">
-          <el-input v-model="loginForm.email" placeholder="邮箱" />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="loginForm.password" placeholder="密码" />
-        </el-form-item>
-        <el-form-item prop="confirmPassword">
-          <el-input v-model="loginForm.confirmPassword" placeholder="确认密码" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="login-button" @click="handleLogin">注册</el-button>
-        </el-form-item>
-      </mis-form>
-      <!-- <mis-form ref="loginForm" class="loginForm" :model="loginForm" :form-head="loginFormHead" label-width="80px" :handle-list="loginFormHandleList" @handle="handleLoginForm" /> -->
+      <mis-form v-if="activeName == 'first'" ref="loginForm" class="loginForm" :model="loginForm" :form-head="loginFormHead" label-width="0" :handle-list="loginFormHandleList" @handle="handleLogin" />
+      <mis-form v-else ref="registerForm" class="loginForm" :model="registerForm" :form-head="registerFormHead" label-width="0" :handle-list="registerFormHandleList" @handle="handleRegister" />
     </el-dialog>
   </div>
 </template>
@@ -58,56 +42,59 @@
 import userApi from '@/api/user'
 export default {
   data() {
+    const confirmPasswordValidator = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请再次输入密码'))
+      } else {
+        if (value !== this.registerForm.password) {
+          callback(new Error('前后密码输入不一致'))
+        }
+        callback()
+      }
+    }
     return {
       searchContent: '',
       dialogVisible: false,
       activeName: 'first',
-      loginForm: {}
-    }
-  },
-  computed: {
-    loginFormHead() {
-      if (this.activeName === 'second') {
-        return [
-          { label: '1', prop: 'username', type: 'input', placeholder: '账号', required: true },
-          { label: '2', prop: 'email', type: 'input', placeholder: '邮箱', rules: [{ required: true, trigger: 'blur', message: '邮箱不能为空' }] },
-          { label: '3', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password' },
-          { label: '4', prop: 'confirmPassword', type: 'input', placeholder: '确认密码', componentType: 'password' }
-        ]
-      } else {
-        return [
-          { label: '1', prop: 'username', type: 'input', placeholder: '账号' },
-          { label: '2', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password' }
-        ]
-      }
+      loginForm: {},
+      loginFormHead: [
+        { label: '', prop: 'username', type: 'input', placeholder: '账号', required: true },
+        { label: '', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password', required: true }
+      ],
+      loginFormHandleList: [
+        { handleType: 'save', buttonType: 'primary', buttonText: '登录', loading: false }
+      ],
+      registerForm: {},
+      registerFormHead: [
+        { label: '', prop: 'username', type: 'input', placeholder: '账号', required: true },
+        { label: '', prop: 'email', type: 'input', placeholder: '邮箱', required: true },
+        { label: '', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password', required: true },
+        { label: '', prop: 'confirmPassword', type: 'input', placeholder: '确认密码', componentType: 'password', rules: [{ required: true, trigger: 'blur', validator: confirmPasswordValidator }] }
+      ],
+      registerFormHandleList: [
+        { handleType: 'save', buttonType: 'primary', buttonText: '注册', loading: false }
+      ]
     }
   },
   watch: {
     activeName: {
       handler(val) {
-        // this.loginForm = {}
-        if (val === 'second') {
-          // this.loginFormHead = [
-          //   { label: '1', prop: 'username', type: 'input', placeholder: '账号', required: true },
-          //   { label: '2', prop: 'email', type: 'input', placeholder: '邮箱', rules: [{ required: true, trigger: 'blur', message: '邮箱不能为空' }] },
-          //   { label: '3', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password' },
-          //   { label: '4', prop: 'confirmPassword', type: 'input', placeholder: '确认密码', componentType: 'password' }
-          // ]
-          this.loginFormHandleList = [
-            { handleType: 'save', buttonType: 'primary', buttonText: '注册' }
-          ]
+        this.reset()
+      }
+    },
+    $route: {
+      handler(val) {
+        if (val.path !== '/searchResult') {
+          this.searchContent = ''
         } else {
-          // this.loginFormHead = [
-          //   { label: '1', prop: 'username', type: 'input', placeholder: '账号' },
-          //   { label: '2', prop: 'password', type: 'input', placeholder: '密码', componentType: 'password' }
-          // ]
-          this.loginFormHandleList = [
-            { handleType: 'save', buttonType: 'primary', buttonText: '登录' }
-          ]
+          this.searchContent = this.$route.query.keyword || ''
         }
       },
-      immediate: true
+      deep: true
     }
+  },
+  mounted() {
+    this.searchContent = this.$route.query.keyword || ''
   },
   methods: {
     search() {
@@ -118,27 +105,58 @@ export default {
             keyword: this.searchContent
           }
         })
+      } else {
+        this.$router.push('/')
       }
     },
     handleLogin() {
-
-    },
-    handleLoginForm(handleType) {
       this.$refs['loginForm'].$refs['el-form'].validate(valid => {
         if (valid) {
-          if (this.activeName === 'second') {
-            userApi.signUp(this.loginForm).then(res => {
-              console.log(res)
-            })
-          }
+          this.loginFormHandleList[0].loading = true
+          this.$store.dispatch('login', this.loginForm).then(() => {
+            this.loginFormHandleList[0].loading = false
+            location.reload()
+          }).catch(() => {
+            this.loginFormHandleList[0].loading = false
+          })
         } else {
           return false
         }
       })
     },
+    handleRegister() {
+      this.$refs['registerForm'].$refs['el-form'].validate(valid => {
+        if (valid) {
+          this.registerFormHandleList[0].loading = true
+          userApi.signUp(this.registerForm).then(res => {
+            this.registerFormHandleList[0].loading = false
+            this.activeName = 'first'
+          }).catch(() => {
+            this.registerFormHandleList[0].loading = false
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    reset() {
+      this.loginForm = {}
+      this.registerForm = {}
+      this.$nextTick(() => {
+        if (this.$refs['loginForm']) {
+          this.$refs['loginForm'].$refs['el-form'].clearValidate()
+        }
+        if (this.$refs['registerForm']) {
+          this.$refs['registerForm'].$refs['el-form'].clearValidate()
+        }
+      })
+    },
+    closeDialog() {
+      this.activeName = 'first'
+      this.reset()
+    },
     async logout() {
       await this.$store.dispatch('logout')
-      this.$router.push('/login')
     }
   }
 }
@@ -160,6 +178,7 @@ export default {
       font-size: 22px;
       font-weight: 600;
       text-align: center;
+      cursor: pointer;
     }
     .search-container{
       display: flex;
@@ -201,8 +220,27 @@ export default {
   .loginForm{
     width: 310px;
     margin: 0 auto;
-    .login-button{
+    .save-button{
       width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 670px){
+  #navbar{
+    .nav-container{
+      .title-container{
+        width: 70px;
+        font-size: 20px;
+      }
+      .search-container{
+        padding: 0;
+      }
+      .avatar-container{
+        width: 60px;
+      }
+    }
+    .loginForm{
+      width: 280px;
     }
   }
 }

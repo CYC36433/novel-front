@@ -25,46 +25,37 @@ const user = {
   actions: {
     // 登录
     login({ commit }, userInfo) {
-      // const { userCode, password } = userInfo
+      const { username, password } = userInfo
       return new Promise((resolve, reject) => {
-        commit('SET_TOKEN', '1')
-        setToken('1')
-        resolve()
-        // userApi.login({ accountName: userCode, userPwd: password }).then(res => {
-        //   commit('SET_TOKEN', res.token)
-        //   setToken(res.token)
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
-        // var formdata = new FormData()
-        // formdata.append('client_id', 'javaboy')
-        // formdata.append('client_secret', '123')
-        // formdata.append('username', userCode)
-        // formdata.append('password', password)
-        // formdata.append('grant_type', 'password')
-        // userApi.logintest(formdata).then(res => {
-        //   console.log(res.data.access_token)
-        //   commit('SET_TOKEN', '1')
-        //   userApi.messageTest(res.data.access_token).then(res2 => {
-        //     console.log(res2)
-        //   })
-        //   setToken('1')
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        var formdata = new FormData()
+        formdata.append('client_id', 'javaboy')
+        formdata.append('client_secret', '123')
+        formdata.append('username', username)
+        formdata.append('password', password)
+        formdata.append('grant_type', 'password')
+        userApi.login(formdata).then(res => {
+          if (res.access_token) {
+            commit('SET_TOKEN', res.access_token)
+            setToken(res.access_token)
+            resolve()
+          } else {
+            reject()
+          }
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
     // 获取信息
     getInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        var flag = 1 // 1.前端生成菜单 2.后端生成菜单
+        // var flag = 1 // 1.前端生成菜单 2.后端生成菜单
         var userInfo
         var roles
-        if (flag === 1) {
-          userInfo = { userName: '开发人员', accountName: 'Administrator' }
-          roles = [10]
+        // 前端生成菜单
+        userApi.getInfo().then(res => {
+          userInfo = res
+          roles = (res.roleList && res.roleList.length && res.roleList[0].id) ? res.roleList.map(o => o.id) : [1]
           commit('SET_USERINFO', userInfo)
           commit('SET_ROLES', roles)
           store.dispatch('GenerateRoutes', roles).then(accessRoutes => {
@@ -73,26 +64,28 @@ const user = {
             router.options.routes.push(...accessRoutes)
           })
           resolve(roles)
-        } else {
-          userApi.getInfo().then(res => {
-            userInfo = {
-              userName: res.userName,
-              accountName: res.accountName,
-              avatar: res.userImg
-            }
-            roles = res.roleIds
-            commit('SET_USERINFO', userInfo)
-            commit('SET_ROLES', roles)
-            store.dispatch('getRoutes', res.sysMenuListVos).then(accessRoutes => {
-              router.addRoutes(accessRoutes)
-              router.options.routes = deepClone(constantRouterMap)
-              router.options.routes.push(...accessRoutes)
-            })
-            resolve(roles)
-          }).catch(err => {
-            reject(err)
-          })
-        }
+        }).catch(() => {
+          reject()
+        })
+        // 后端生成菜单
+        // userApi.getInfo().then(res => {
+        //   userInfo = {
+        //     userName: res.userName,
+        //     accountName: res.accountName,
+        //     avatar: res.userImg
+        //   }
+        //   roles = res.roleIds
+        //   commit('SET_USERINFO', userInfo)
+        //   commit('SET_ROLES', roles)
+        //   store.dispatch('getRoutes', res.sysMenuListVos).then(accessRoutes => {
+        //     router.addRoutes(accessRoutes)
+        //     router.options.routes = deepClone(constantRouterMap)
+        //     router.options.routes.push(...accessRoutes)
+        //   })
+        //   resolve(roles)
+        // }).catch(err => {
+        //   reject(err)
+        // })
       })
     },
     // 登出

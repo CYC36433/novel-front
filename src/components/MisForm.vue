@@ -51,6 +51,7 @@
             :active-value="item.activeValue || 1"
             :inactive-value="item.inactiveValue || 0"
           >
+            <template v-if="item.labelText">{{ model[item.prop] }}</template>
             <template v-if="hasChild(item.type)">
               <component :is="getChildType(item.type)" v-for="(childItem,childIndex) in item.settings" :key="childIndex" :label="childItem.label" :value="childItem.value" :disabled="childItem.disabled">
                 <template v-if="childItem.labelText">{{ childItem.labelText }}</template>
@@ -71,6 +72,8 @@
             :size="size"
             :circle="item.circle"
             :plain="item.plain"
+            :loading="item.loading"
+            :disabled="item.disabled"
             @click="handle(item.handleType)"
           >
             <template v-if="item.buttonText">{{ item.buttonText }}</template>
@@ -91,7 +94,7 @@ export default {
     rules: Object,
     inline: { type: Boolean, default: false },
     labelPosition: String,
-    labelWidth: { type: String, default: '100px' },
+    labelWidth: { type: String, default: '70px' },
     size: { type: String, default: 'medium' },
     num: { type: Number, default: 1 }, // 每行的item數
     showHandle: { type: Boolean, default: true },
@@ -116,6 +119,9 @@ export default {
       return this.formHead.filter(o => {
         // 统一type
         if (o.type) {
+          if (o.type.includes('tag')) {
+            o.labelText = o.label
+          }
           if ((o.type.includes('radio') || o.type.includes('checkbox')) && !o.type.includes('-group')) {
             o.type += '-group'
             o.settings.forEach(p => {
@@ -130,7 +136,7 @@ export default {
         // 添加必填校验
         if (o.required && !o.rules) {
           var ruleMessage = o.label || o.placeholder || ''
-          o.rules = [{ required: true, trigger: ['blur', 'change'], message: `${ruleMessage.replace(/\s*/g, '')}不能為空` }]
+          o.rules = [{ required: true, trigger: ['blur', 'change'], message: `${ruleMessage.replace(/\s*/g, '')}不能为空` }]
         }
         return true
       })
