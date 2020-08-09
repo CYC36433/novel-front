@@ -39,7 +39,8 @@ $danger:#EB8171;
 }
 .main-container{
   position: relative;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 60px);
+  padding-top: 80px;
 }
 .Sidebar{
   display: inline-block;

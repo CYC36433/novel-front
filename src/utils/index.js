@@ -7,7 +7,16 @@ export function format(param, fmt) {
   if (!param) {
     return ''
   }
-  var date = new Date(param)
+  var date
+  // safari浏览器
+  if (isNaN(Date.parse(param))) {
+    date = new Date(Date.parse(param.replace(/-/g, '/').replace(/T/, ' ')))
+  } else {
+    date = new Date(Date.parse(param))
+  }
+  if (date === 'Invalid Date') {
+    return param
+  }
   var o = {
     'M+': date.getMonth() + 1, // 月份
     'd+': date.getDate(), // 日

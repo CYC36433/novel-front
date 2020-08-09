@@ -25,7 +25,7 @@
         </el-dropdown>
       </el-col>
     </el-row>
-    <el-dialog :visible.sync="dialogVisible" center :close-on-click-modal="false" @close="closeDialog">
+    <el-dialog :visible.sync="dialogVisible" center :close-on-click-modal="false" :modal-append-to-body="false" @close="closeDialog">
       <template slot="title">
         <el-tabs v-model="activeName">
           <el-tab-pane label="登　　录" name="first" />
@@ -164,8 +164,14 @@ export default {
 
 <style lang="scss">
 #navbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
   min-height: 80px;
   padding-top: 18px;
+  background: #ffffff;
   box-shadow: 0 0 5px #C0C0C0;
   .nav-container{
     display: flex;

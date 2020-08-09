@@ -1,9 +1,9 @@
 import { format } from '@/utils'
 
 export function dateFormatter(val) {
-  return isNaN(Date.parse(val)) ? val : format(Date.parse(val), 'yyyy/MM/dd')
+  return format(val, 'yyyy/MM/dd')
 }
 
 export function timeFormatter(val) {
-  return isNaN(Date.parse(val)) ? val : format(Date.parse(val), 'yyyy/MM/dd hh:mm:ss')
+  return format(val, 'yyyy/MM/dd hh:mm:ss')
 }

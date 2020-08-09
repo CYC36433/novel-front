@@ -37,6 +37,16 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
+    if (response.status === 401) {
+      Message({
+        message: '登录信息过期，请重新登录！',
+        type: 'error',
+        duration: 2 * 1000
+      })
+      store.dispatch('resetToken')
+      setTimeout(window.location.replace(`https://` + window.location.host), 2000)
+      return
+    }
     const res = response.data
     if (res.code) {
     // 请求数据不成功,弹框提示
@@ -44,12 +54,12 @@ service.interceptors.response.use(
       // token过期code401,返回登录页
         if (res.code === 401) {
           Message({
-            message: '登录信息过期，即将跳转登录页！',
+            message: '登录信息过期，请重新登录！',
             type: 'error',
             duration: 2 * 1000
           })
           store.dispatch('resetToken')
-          setTimeout(window.location.replace(`http://` + window.location.host), 2000)
+          setTimeout(window.location.replace(`https://` + window.location.host), 2000)
         } else {
           if (res.code !== 501) {
             Message({
