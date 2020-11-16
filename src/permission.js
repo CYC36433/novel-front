@@ -33,7 +33,7 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('/fictionDetail') !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('/fictionDetail') !== -1 || to.path.indexOf('/readFiction') !== -1) {
       next()
       NProgress.done()
     } else {

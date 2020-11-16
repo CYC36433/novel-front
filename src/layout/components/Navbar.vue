@@ -1,6 +1,6 @@
 <template>
   <div id="navbar">
-    <el-row class="nav-container web-show">
+    <el-row class="nav-container">
       <el-col class="title-container">
         <div @click="$router.push('/')">鱼书</div>
       </el-col>
@@ -11,8 +11,7 @@
       </el-col>
       <el-col class="avatar-container">
         <el-button v-if="!$store.getters.token" type="text" @click="dialogVisible = true">登录</el-button>
-        <!-- <el-button v-else type="text" @click="dialogVisible = true">{{ $store.getters.userInfo.username || '' }}</el-button> -->
-        <el-dropdown v-else trigger="click" click="web-show">
+        <el-dropdown v-else trigger="click">
           <el-avatar :size="40" icon="el-icon-user-solid" />
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
@@ -55,6 +54,7 @@ export default {
     return {
       searchContent: '',
       dialogVisible: false,
+      drawerVisible: false,
       activeName: 'first',
       loginForm: {},
       loginFormHead: [

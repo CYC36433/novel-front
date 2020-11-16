@@ -28,6 +28,14 @@ function getSubscribeList() {
   return request.get('/novel-subscription-user/customer/subscription')
 }
 
+function getChapterList(data) {
+  return request.get('/novel-subscription-fiction/fiction/getChapterList/' + data)
+}
+
+function getChapterContent(data) {
+  return request.get('/novel-subscription-fiction/fiction/getChapterContent', { params: data })
+}
+
 const fictionApi = {
   getHotList,
   getListBySearch,
@@ -35,7 +43,9 @@ const fictionApi = {
   subscribeNovel,
   cancelSubscribeNovel,
   checkSubscribeNovel,
-  getSubscribeList
+  getSubscribeList,
+  getChapterList,
+  getChapterContent
 }
 
 export default fictionApi

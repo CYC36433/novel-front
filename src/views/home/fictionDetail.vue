@@ -24,6 +24,27 @@
       </div>
       <div v-if="noResult" class="blank-result">查询失败... ...</div>
     </el-row>
+    <el-row class="main-title">
+      章节列表
+    </el-row>
+    <el-row class="chapter-container">
+      <ul class="chapter-list">
+        <li v-for="(item,index) in liList" :key="index" @click="read(item.chapterId)">{{ item.chapterName }}</li>
+      </ul>
+      <el-pagination
+        v-if="ChapterList && ChapterList.length"
+        ref="el-pagination"
+        small
+        background
+        style="text-align:right;margin-top:15px;"
+        layout=" prev, pager, next,sizes"
+        :pager-count="5"
+        :total="ChapterList.length"
+        :page-sizes="[20,50,200]"
+        :current-page.sync="pageIndex"
+        :page-size.sync="pageSize"
+      />
+    </el-row>
   </div>
 </template>
 
@@ -34,6 +55,7 @@ export default {
     return {
       id: null,
       noResult: false,
+      noChapterList: false,
       isSubscribe: 0,
       novelForm: {},
       novelFormHead: [
@@ -44,7 +66,15 @@ export default {
         { label: '最新章节', prop: 'latestChapter' },
         { label: '简　　介', prop: 'novelDesc', span: 24 }
       ],
-      loading: false
+      ChapterList: [],
+      loading: false,
+      pageIndex: 1,
+      pageSize: 20
+    }
+  },
+  computed: {
+    liList() {
+      return this.ChapterList.slice((this.pageIndex - 1) * this.pageSize, this.pageIndex * this.pageSize)
     }
   },
   watch: {
@@ -63,6 +93,7 @@ export default {
   methods: {
     getData() {
       this.noResult = false
+      this.noChapterList = false
       if (this.id) {
         const loading = this.$loading({
           target: '.result-container',
@@ -76,6 +107,12 @@ export default {
           this.noResult = true
           this.novelForm = {}
           loading.close()
+        })
+        fictionApi.getChapterList(this.id).then(res => {
+          this.ChapterList = res || []
+          this.noChapterList = false
+        }).catch(() => {
+          this.noChapterList = true
         })
       }
     },
@@ -109,6 +146,15 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    read(val) {
+      this.$router.push({
+        name: 'readFiction',
+        params: {
+          id: this.id,
+          chapterId: val
+        }
+      })
     }
   }
 }
@@ -123,6 +169,20 @@ export default {
   .novel-title{
     color: #555555;
     margin: 5px 0 16px 2px;
+  }
+  .result-container{
+    min-height: 400px;
+  }
+  .chapter-container{
+    .chapter-list{
+      margin: 0;
+      padding: 0;
+      li{
+        list-style: none;
+        padding: 5px 0;
+        border-bottom: 1px solid #eeeeee;
+      }
+    }
   }
 }
 </style>

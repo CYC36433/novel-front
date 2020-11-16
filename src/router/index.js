@@ -38,6 +38,12 @@ export const constantRouterMap = [
         component: () => import('@/views/home/fictionDetail.vue'),
         title: '详细信息',
         isHidden: true
+      }, {
+        name: 'readFiction',
+        path: '/readFiction/:id/:chapterId',
+        component: () => import('@/views/home/readFiction.vue'),
+        title: '小说阅读',
+        isHidden: true
       }
     ]
   }

@@ -1,5 +1,19 @@
 <template>
   <div id="app-main">
-    <router-view />
+    <router-view :key="key" />
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    key() {
+      return this.$route.path
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
